@@ -69,7 +69,7 @@ class Snake(GameObject):
                  position=[(320, 240)]):
         """Начальное состояние змеи"""
         self.direction = direction
-        self.body_color = body_color 
+        self.body_color = body_color
         self.positions = position
         self.length = len(self.positions)
 
