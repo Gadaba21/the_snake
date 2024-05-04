@@ -48,12 +48,12 @@ class GameObject():  # Создаем базоввый класс
         self.position = position
         self.body_color = body_color
 
-    def draw(self):
+    def draw(self):  # Метод для передачи в дочерник класс
         pass
 
 
 class Snake(GameObject):  # Создаем класс змея
-    length = 1
+    length = 1  # Начальная длинна змеи
     max_length = 20  # Длина змеи
     direction = RIGHT  # Направление движения
     next_direction = None  # следующее направление движения
@@ -67,14 +67,12 @@ class Snake(GameObject):  # Создаем класс змея
         self.last = last
         self.length = len(self.positions)
 
-    # Изменение направления движения
-    def update_direction(self):
+    def update_direction(self):  # Изменение направления движения
         if self.next_direction:
             self.direction = self.next_direction
             self.next_direction = None
 
-    # Обновляет позицию змеи
-    def move(self):
+    def move(self):  # Обновляет позицию змеи
         first, second = self.positions[0]
         first_dir, second_dir = self.direction
         if first > SCREEN_WIDTH:
