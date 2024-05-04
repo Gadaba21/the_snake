@@ -122,7 +122,8 @@ class Apple(GameObject):
 
     body_color = APPLE_COLOR  # Задаем цвет яблока
 
-    def __init__(self, randomize_position, body_color=APPLE_COLOR):
+    def __init__(self, randomize_position=[(320, 240)],
+                 body_color=APPLE_COLOR):
         """Создаем экземпляр класса"""
         self.body_color = body_color
         self.position = randomize_position
