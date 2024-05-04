@@ -46,7 +46,8 @@ class GameObject:
     position = [(320, 240)]  # Позиция центра экрана
     body_color = BOARD_BACKGROUND_COLOR  # Цвет объекта
 
-    def __init__(self, position=[(320, 240)], body_color=BOARD_BACKGROUND_COLOR):
+    def __init__(self, position=[(320, 240)],
+                 body_color=BOARD_BACKGROUND_COLOR):
         self.position = position
         self.body_color = body_color
 
@@ -64,10 +65,11 @@ class Snake(GameObject):
     next_direction = None  # следующее направление движения
     body_color = SNAKE_COLOR  # Цвет змеи
 
-    def __init__(self, direction=RIGHT, body_color=SNAKE_COLOR, position=[(320, 240)]):
+    def __init__(self, direction=RIGHT, body_color=SNAKE_COLOR,
+                 position=[(320, 240)]):
         """Начальное состояние змеи"""
         self.direction = direction
-        self.body_color = body_color
+        self.body_color = body_color 
         self.positions = position
         self.length = len(self.positions)
 
@@ -89,7 +91,8 @@ class Snake(GameObject):
             second = 0
         elif second < 0:
             second = SCREEN_HEIGHT
-        self.positions.insert(0, (first + first_dir * 20, second + second_dir * 20))
+        self.positions.insert(0, (first + first_dir * 20,
+                                  second + second_dir * 20))
         self.positions.pop(-1)
 
     def draw(self):
