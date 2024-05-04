@@ -33,20 +33,20 @@ SPEED = 5
 screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT), 0, 32)
 
 # Заголовок окна игрового поля:
-pygame.display.set_caption('Змейка')
+pygame.display.set_caption("Змейка")
 
 # Настройка времени:
 clock = pygame.time.Clock()
 
 
 # Тут опишите все классы игры.
-class GameObject():
+class GameObject:
     """Создаем базоввый класс"""
 
     position = [(320, 240)]  # Позиция центра экрана
     body_color = BOARD_BACKGROUND_COLOR  # Цвет объекта
 
-    def __init__(self, position, body_color):
+    def __init__(self, position=[(320, 240)], body_color=BOARD_BACKGROUND_COLOR):
         self.position = position
         self.body_color = body_color
 
@@ -64,12 +64,11 @@ class Snake(GameObject):
     next_direction = None  # следующее направление движения
     body_color = SNAKE_COLOR  # Цвет змеи
 
-    def __init__(self, direction, body_color, position, last):
+    def __init__(self, direction=RIGHT, body_color=SNAKE_COLOR, position=[(320, 240)]):
         """Начальное состояние змеи"""
         self.direction = direction
         self.body_color = body_color
         self.positions = position
-        self.last = last
         self.length = len(self.positions)
 
     def update_direction(self):
@@ -90,14 +89,13 @@ class Snake(GameObject):
             second = 0
         elif second < 0:
             second = SCREEN_HEIGHT
-        self.positions.insert(0, (first + first_dir * 20,
-                                  second + second_dir * 20))
+        self.positions.insert(0, (first + first_dir * 20, second + second_dir * 20))
         self.positions.pop(-1)
 
     def draw(self):
         """Затирает след от змейки и отрисовывает новое положение"""
         for position in self.positions:
-            rect = (pygame.Rect(position, (GRID_SIZE, GRID_SIZE)))
+            rect = pygame.Rect(position, (GRID_SIZE, GRID_SIZE))
             pygame.draw.rect(screen, self.body_color, rect)
             pygame.draw.rect(screen, BORDER_COLOR, rect, 1)
 
@@ -121,7 +119,7 @@ class Apple(GameObject):
 
     body_color = APPLE_COLOR  # Задаем цвет яблока
 
-    def __init__(self, body_color, randomize_position):
+    def __init__(self, randomize_position, body_color=APPLE_COLOR):
         """Создаем экземпляр класса"""
         self.body_color = body_color
         self.position = randomize_position
@@ -161,8 +159,8 @@ def main():
     pygame.init()  # Инициализация PyGame:
 
     # Создаем экземпляр классов
-    apple = Apple(APPLE_COLOR, Apple.randomize_position())
-    snake = Snake(RIGHT, SNAKE_COLOR, [(320, 240)], 20)
+    apple = Apple(Apple.randomize_position())
+    snake = Snake()
 
     while True:
         clock.tick(SPEED)  # Скорость змеи
@@ -187,5 +185,5 @@ def main():
         pygame.display.update()  # Обновление игрового поля
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()
