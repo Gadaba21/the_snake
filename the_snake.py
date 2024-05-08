@@ -8,11 +8,17 @@ GRID_SIZE = 20
 GRID_WIDTH = SCREEN_WIDTH // GRID_SIZE
 GRID_HEIGHT = SCREEN_HEIGHT // GRID_SIZE
 
+# Координа за экраном для хранения обьектов
+BEHIND_THE_SCREEN = [(1000, 1000)]
+
 # Направления движения:
 UP = (0, -1)
 DOWN = (0, 1)
 LEFT = (-1, 0)
 RIGHT = (1, 0)
+
+# Цвет ледяного яблока
+FROZEN_APPLE_COLOR = (255, 255, 255)
 
 # Цвет фона - черный:
 BOARD_BACKGROUND_COLOR = (0, 0, 0)
@@ -27,8 +33,12 @@ APPLE_COLOR = (255, 0, 0)
 SNAKE_COLOR = (0, 255, 0)
 
 # Скорость движения змейки:
-SPEED = 5
+SPEED = 10
 speed = SPEED
+
+# Счетчик для отчета времени в замедлении
+counter2 = 0
+
 # Настройка игрового окна:
 screen = pg.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT), 0, 32)
 
@@ -83,6 +93,7 @@ class Snake(GameObject):
         second_coord = (second + (second_dir * GRID_SIZE)) % SCREEN_HEIGHT
         self.positions.insert(0, (first_coord, second_coord))
         self.positions.pop(-1)
+        screen.fill(BOARD_BACKGROUND_COLOR)
 
     @staticmethod
     def get_head_position(position):
@@ -116,8 +127,30 @@ class Apple(GameObject):
         return position
 
 
+class FrozenApple(Apple):
+    """Создаем класс леденого яблока"""
+
+    body_color = FROZEN_APPLE_COLOR
+
+    @staticmethod
+    def frozen_time(counter):
+        """Счетчик времени в замедлении, лучше не смог придумать
+        Очень не нравится что использую глобальные переменные"""
+        global speed
+        global counter2
+        if counter == 1:
+            speed = 3
+            counter2 = 0
+        if speed == 3:
+            counter2 += 1
+        if counter2 == 20:
+            speed = SPEED
+            counter2 = 0
+
+
 def handle_keys(game_object):
-    """Меняет направление движения при нажатия клавиш b скорость змеи"""
+    """Меняет направление движения при нажатия клавиш  и скорость змеи
+    В словарь к сожелению, не понял как сделать"""
     global speed
     for event in pg.event.get():
         if event.type == pg.QUIT:
@@ -145,6 +178,9 @@ def main():
     # Создаем экземпляр классов
     apple = Apple(Apple.randomize_position())
     snake = Snake()
+    frozen_apple = FrozenApple(BEHIND_THE_SCREEN)
+    time = 0
+    counter = 0
 
     while True:
         screen.fill(BOARD_BACKGROUND_COLOR)
@@ -152,7 +188,9 @@ def main():
         handle_keys(snake)  # Управление змеей
         snake.update_direction(snake.next_direction)  # Изменение направления
         # Поедание яблока
-        if apple.position[0] == Snake.get_head_position(snake.positions):
+        if Snake.get_head_position(apple.position
+                                   ) == Snake.get_head_position(
+                                       snake.positions):
             apple.position = apple.randomize_position()
             # Змейка не увеличивается если достигнит максимальной длины
             if len(snake.positions) != snake.max_length:
@@ -165,6 +203,18 @@ def main():
         snake.move()  # Передвижение змеи
         apple.draw(apple.position)  # Отрисовка яблока
         snake.draw(snake.positions)  # Отрисовка змеи
+        frozen_apple.draw(frozen_apple.position)
+        if Snake.get_head_position(frozen_apple.position
+                                   ) == Snake.get_head_position(
+                                       snake.positions):
+            frozen_apple.position = BEHIND_THE_SCREEN
+            counter += 1
+        FrozenApple.frozen_time(counter)
+        counter = 0
+        time += 1
+        if time == 100:
+            frozen_apple.position = frozen_apple.randomize_position()
+            time = 0
         pg.display.update()  # Обновление игрового поля
 
 
