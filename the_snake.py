@@ -74,6 +74,8 @@ class Snake(GameObject):
     direction = RIGHT  # Направление движения
     next_direction = None  # следующее направление движения
     body_color = SNAKE_COLOR  # Цвет змеи
+    # Не проходит автотесты без него
+    positions = [(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2)]
 
     def __init__(self):
         """Начальное состояние змеи"""
