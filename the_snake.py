@@ -74,8 +74,6 @@ class Snake(GameObject):
     direction = RIGHT  # Направление движения
     next_direction = None  # следующее направление движения
     body_color = SNAKE_COLOR  # Цвет змеи
-    # Не проходит автотесты без него
-    positions = [(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2)]
 
     def __init__(self):
         """Начальное состояние змеи"""
@@ -89,12 +87,12 @@ class Snake(GameObject):
 
     def move(self):
         """Обновляет позицию змеи"""
-        first, second = Snake.get_head_position(self.positions)
+        first, second = Snake.get_head_position(self.position)
         first_dir, second_dir = self.direction
         first_coord = (first + (first_dir * GRID_SIZE)) % SCREEN_WIDTH
         second_coord = (second + (second_dir * GRID_SIZE)) % SCREEN_HEIGHT
-        self.positions.insert(0, (first_coord, second_coord))
-        self.positions.pop(-1)
+        self.position.insert(0, (first_coord, second_coord))
+        self.position.pop(-1)
         screen.fill(BOARD_BACKGROUND_COLOR)
 
     @staticmethod
@@ -108,7 +106,7 @@ class Snake(GameObject):
         self.length = 1
         self.direction = RIGHT
         self.next_direction = None
-        self.positions = [(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2)]
+        self.position = [(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2)]
 
 
 class Apple(GameObject):
@@ -194,23 +192,23 @@ def main():
         # Поедание яблока
         if Snake.get_head_position(apple.position
                                    ) == Snake.get_head_position(
-                                       snake.positions):
+                                       snake.position):
             apple.position = apple.randomize_position()
             # Змейка не увеличивается если достигнит максимальной длины
-            if len(snake.positions) != snake.max_length:
+            if len(snake.position) != snake.max_length:
                 snake.positions.append(apple.position)
         # Столкновение с телом змеи
-        if Snake.get_head_position(snake.positions) in snake.positions[2:]:
+        if Snake.get_head_position(snake.position) in snake.position[2:]:
             snake.reset()
-        if apple.position in snake.positions:
+        if apple.position in snake.position:
             apple.position = apple.randomize_position()
         snake.move()  # Передвижение змеи
         apple.draw(apple.position)  # Отрисовка яблока
-        snake.draw(snake.positions)  # Отрисовка змеи
+        snake.draw(snake.position)  # Отрисовка змеи
         frozen_apple.draw(frozen_apple.position)
         if Snake.get_head_position(frozen_apple.position
                                    ) == Snake.get_head_position(
-                                       snake.positions):
+                                       snake.position):
             frozen_apple.position = BEHIND_THE_SCREEN
             counter += 1
         FrozenApple.frozen_time(counter)
