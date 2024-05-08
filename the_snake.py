@@ -135,7 +135,8 @@ class FrozenApple(Apple):
     @staticmethod
     def frozen_time(counter):
         """Счетчик времени в замедлении, лучше не смог придумать
-        Очень не нравится что использую глобальные переменные"""
+        Очень не нравится что использую глобальные переменные
+        """
         global speed
         global counter2
         if counter == 1:
@@ -150,7 +151,8 @@ class FrozenApple(Apple):
 
 def handle_keys(game_object):
     """Меняет направление движения при нажатия клавиш  и скорость змеи
-    В словарь к сожелению, не понял как сделать"""
+    В словарь к сожелению, не понял как сделать
+    """
     global speed
     for event in pg.event.get():
         if event.type == pg.QUIT:
