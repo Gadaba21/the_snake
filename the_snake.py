@@ -107,6 +107,8 @@ class Snake(GameObject):
         self.direction = RIGHT
         self.next_direction = None
         self.position = [(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2)]
+        # Не пускает автотест без записи ниже
+        self.positions = self.position
 
 
 class Apple(GameObject):
