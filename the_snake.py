@@ -87,7 +87,7 @@ class Snake(GameObject):
 
     def draw(self):
         """Метод для отрисовки обьектов"""
-        super().rendering(self.position)
+        self.rendering(self.position)
 
     def update_direction(self, next_direction):
         """Изменение направления движения"""
@@ -125,14 +125,13 @@ class Apple(GameObject):
 
     body_color = APPLE_COLOR  # Задаем цвет яблока
 
-    def __init__(self, randomize_position=[(SCREEN_WIDTH // 2,
-                                            SCREEN_HEIGHT // 2)]):
+    def __init__(self, position=[(SCREEN_WIDTH // 2, SCREEN_HEIGHT // 2)]):
         """Создаем экземпляр класса"""
-        super().__init__(randomize_position)
+        super().__init__(position)
 
     def draw(self):
         """Метод для отрисовки обьектов"""
-        super().rendering(self.position)
+        self.rendering(self.position)
 
     @staticmethod
     def randomize_position():
